@@ -50,7 +50,7 @@ const Home = (props) => {
                   <Grid item xs={3} sx={{ display: "flex", justifyContent: "flex-end" }}>
                 {user ? (
                   <>
-                    <Link to="/result" style={{ textDecoration: "none", color: "inherit" }}>
+                    <Link to="/recommendation" style={{ textDecoration: "none", color: "inherit" }}>
                       <Button color="inherit" style={{ marginRight: "8px" }}>
                         Profile
                       </Button>

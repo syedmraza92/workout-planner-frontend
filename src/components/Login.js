@@ -20,7 +20,7 @@ const Login = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        navigate("/result");
+        navigate("/recommendation");
       }
     });
 
@@ -39,7 +39,7 @@ const Login = () => {
       .then(async (res) => {
         setSubmitButtonDisabled(false);
 
-        navigate("/result"); //change this later to redirect to result page
+        navigate("/recommendation"); //change this later to redirect to result page
       })
       .catch((err) => {
         setSubmitButtonDisabled(false);

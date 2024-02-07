@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import { TextField, Button, Container, Typography } from '@mui/material';
+import React from 'react';
+import { AppBar, Button, Toolbar, TextField, Container, Typography } from '@mui/material';
 import WorkoutService from '../service/workout.service';
-import styles from "./Login.module.css";
-import { useNavigate } from "react-router-dom";
+import styles from './Login.module.css';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDumbbell } from "@fortawesome/free-solid-svg-icons";
 
-const WorkoutForm = () => {
-  const [recommendations, setRecommendations] = useState('');
-  const [loading, setLoading] = useState(false);
+const EditProfilePage = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = React.useState({
     firstName: '',
     lastName: '',
     age: '',
@@ -17,64 +17,56 @@ const WorkoutForm = () => {
     desiredWeight: '',
   });
 
-  const [setMsg] = useState('');
-  const [error, setError] = useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-const handleSubmit = (e) => {
-  e.preventDefault();
-  console.log('Form submitted:', formData);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
 
-  setLoading(true);
+    setLoading(true);
 
-  // First, create the workout
-  WorkoutService.createWorkout(formData)
-    .then((res) => {
-      console.log("Workout Added Successfully");
-
-      // Now, fetch recommendations and set the state
-      WorkoutService.getWorkoutRecommendation(formData)
-        .then((response) => {
-          console.log("Recommendations:", response.data);
-          setRecommendations(response.data);
-          setMsg("Workout Added Successfully");
-          setLoading(false);
-
-          // After receiving recommendations, navigate to the result page
-          navigate('/result', { state: { recommendations: response.data } });
-        })
-        .catch((error) => {
-
-          console.error("Error fetching recommendations:", error);
-          setError("Error fetching recommendations. Please try again.");
-          setLoading(false);
-
-    
-          if (error.response) {
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-          }
-        });
-    })
-    .catch((error) => {
-      console.log("Error submitting workout:", error);
-      setError("Error submitting workout. Please try again.");
-      setLoading(false);
-    });
-};
+    // Call the API to update user information
+    WorkoutService.updateUserData(formData)
+      .then((response) => {
+        console.log('User data updated successfully', response.data);
+        setLoading(false);
+        navigate('/result'); // Navigate back to the RecommendationPage after updating user data
+      })
+      .catch((error) => {
+        console.error('Error updating user data:', error);
+        setError('Error updating user data. Please try again.');
+        setLoading(false);
+      });
+  };
 
   return (
+    <div>         <AppBar position="static" sx={{ backgroundColor: "#678174" }}>
+    <Container>
+      <Toolbar>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ color: "white" }}>
+            <FontAwesomeIcon icon={faDumbbell} />
+          </Typography>
+        </Typography>
+        <Button color="inherit" onClick={() => navigate("/")}>
+          Go Back
+        </Button>
+      </Toolbar>
+    </Container>
+  </AppBar>
     <div className={styles.container}>
       <Container maxWidth="sm">
         <Typography variant="h4" align="center" gutterBottom>
-          Please fill out this form:
+          Edit Your Profile:
         </Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
+        <TextField
             label="First Name"
             name="firstName"
             value={formData.firstName}
@@ -122,23 +114,18 @@ const handleSubmit = (e) => {
             fullWidth
             margin="normal"
           />
+
           <Button type="submit" variant="contained" sx={{ backgroundColor: '#678174', color: 'white' }}>
-            Submit
+            Save Changes
           </Button>
         </form>
 
         {loading && <p>Loading...</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
-
-        {recommendations && (
-          <div>
-            <strong>Workout Recommendations:</strong>
-            <pre>{recommendations}</pre>
-          </div>
-        )}
       </Container>
+    </div>
     </div>
   );
 };
 
-export default WorkoutForm;
+export default EditProfilePage;

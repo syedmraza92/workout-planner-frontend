@@ -9,6 +9,8 @@ import { useEffect, useState } from "react";
 import { auth } from "./firebase";
 import Profile from "./components/Profile";
 import Result from "./components/Result";
+import EditProfilePage from "./components/EditProfilePage";
+import RecommendationPage from "./components/RecommendationPage";
 
 function App() {
   const[userName, setUserName] = useState("");
@@ -30,6 +32,8 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/result" element={<Result/>} />
+        <Route path="/recommendation" element={<RecommendationPage />} />
+        <Route path="/edit-profile" element={<EditProfilePage />} />
       </Routes>
     </Router>
   );
