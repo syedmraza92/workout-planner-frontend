@@ -35,9 +35,9 @@ const RecommendationPage = () => {
       <Button variant="contained" sx={{ backgroundColor: '#678174', color: 'white' }} onClick={handleEditClick}>
           Edit Profile
         </Button>
-        <Typography variant="h4" align="center" gutterBottom>
+        {/* <Typography variant="h4" align="center" gutterBottom>
           Following is your recommendation:
-        </Typography>
+        </Typography> */}
 
         {recommendations && (
           <div>
